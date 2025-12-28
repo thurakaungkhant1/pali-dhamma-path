@@ -2,26 +2,33 @@ import { useState } from 'react';
 import { Heart, CheckCircle, Wallet, CreditCard, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import Layout from '@/components/layout/Layout';
 import LotusDecoration from '@/components/LotusDecoration';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Donate = () => {
+  const { user } = useAuth();
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState('');
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const [donorName, setDonorName] = useState('');
+  const [donorMessage, setDonorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const amounts = [5000, 10000, 20000, 50000, 100000];
   
   const paymentMethods = [
-    { id: 'kpay', name: 'KBZ Pay', icon: Wallet },
+    { id: 'kbzpay', name: 'KBZ Pay', icon: Wallet },
     { id: 'wave', name: 'Wave Money', icon: Wallet },
     { id: 'cbpay', name: 'CB Pay', icon: CreditCard },
     { id: 'bank', name: 'Bank Transfer', icon: Building2 },
   ];
 
-  const handleDonate = () => {
+  const handleDonate = async () => {
     const amount = selectedAmount || parseInt(customAmount);
     if (!amount || amount <= 0) {
       toast({
@@ -40,10 +47,41 @@ const Donate = () => {
       return;
     }
 
-    toast({
-      title: 'ကျေးဇူးတင်ပါသည်',
-      description: 'သင်၏ လှူဒါန်းမှုအတွက် အထူးကျေးဇူးတင်ရှိပါသည်။ သာသနာတော် ထွန်းကားပါစေ။',
-    });
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.from('donations').insert({
+        user_id: user?.id ?? null,
+        amount,
+        currency: 'MMK',
+        payment_method: selectedMethod,
+        donor_name: donorName || null,
+        donor_message: donorMessage || null,
+        status: 'pending',
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'ကျေးဇူးတင်ပါသည်',
+        description: 'သင်၏ လှူဒါန်းမှုအတွက် အထူးကျေးဇူးတင်ရှိပါသည်။ သာသနာတော် ထွန်းကားပါစေ။',
+      });
+
+      // Reset form
+      setSelectedAmount(null);
+      setCustomAmount('');
+      setSelectedMethod(null);
+      setDonorName('');
+      setDonorMessage('');
+    } catch (error) {
+      toast({
+        title: 'အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့ပါသည်',
+        description: 'နောက်မှ ထပ်ကြိုးစားပါ',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,7 +102,7 @@ const Donate = () => {
             </h1>
             
             <p className="text-lg text-muted-foreground font-myanmar leading-relaxed">
-              သင်၏ လှူဒါန်းမှုသည် ပါဠိတရားတော်များကို မြန်မာဘာသာသို့ 
+              သင်၏ လှူဒါန်းမှုသည် ပါဠိတရားတော်များကို နိဿယနည်းလမ်းဖြင့် 
               ဆက်လက် ဘာသာပြန်ဆိုရန်နှင့် ဤဝက်ဘ်ဆိုက်ကို ထိန်းသိမ်းရန် အထောက်အကူ ဖြစ်ပါသည်။
             </p>
           </div>
@@ -109,7 +147,7 @@ const Donate = () => {
                     setCustomAmount(e.target.value);
                     setSelectedAmount(null);
                   }}
-                  className="h-14 text-lg font-myanmar"
+                  className="h-14 text-lg font-myanmar pr-16"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground font-myanmar">
                   ကျပ်
@@ -149,15 +187,44 @@ const Donate = () => {
               </div>
             </div>
 
+            {/* Optional Info */}
+            <div className="space-y-4 mb-8">
+              <div>
+                <label className="block font-myanmar text-sm font-medium text-foreground mb-2">
+                  အမည် (မဖြစ်မနေမဟုတ်)
+                </label>
+                <Input
+                  type="text"
+                  placeholder="သင့်အမည်"
+                  value={donorName}
+                  onChange={(e) => setDonorName(e.target.value)}
+                  className="h-12 font-myanmar"
+                />
+              </div>
+              <div>
+                <label className="block font-myanmar text-sm font-medium text-foreground mb-2">
+                  မှတ်ချက် (မဖြစ်မနေမဟုတ်)
+                </label>
+                <Textarea
+                  placeholder="သင်၏ မှတ်ချက်..."
+                  value={donorMessage}
+                  onChange={(e) => setDonorMessage(e.target.value)}
+                  className="font-myanmar"
+                  rows={3}
+                />
+              </div>
+            </div>
+
             {/* Donate Button */}
             <Button
               variant="donation"
               size="xl"
               className="w-full gap-2 font-myanmar"
               onClick={handleDonate}
+              disabled={loading}
             >
               <Heart className="w-5 h-5" />
-              လှူဒါန်းရန်
+              {loading ? 'လုပ်ဆောင်နေပါသည်...' : 'လှူဒါန်းရန်'}
             </Button>
 
             {/* Note */}

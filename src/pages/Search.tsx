@@ -1,27 +1,14 @@
-import { useState, useMemo } from 'react';
-import { Search as SearchIcon, X } from 'lucide-react';
+import { useState } from 'react';
+import { Search as SearchIcon, X, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/layout/Layout';
-import TeachingCard from '@/components/TeachingCard';
-import { teachings } from '@/data/teachings';
+import TeachingListCard from '@/components/TeachingListCard';
+import { useSearchTeachings } from '@/hooks/useTeachings';
 
 const Search = () => {
   const [query, setQuery] = useState('');
-
-  const searchResults = useMemo(() => {
-    if (!query.trim()) return [];
-    
-    const lowerQuery = query.toLowerCase();
-    return teachings.filter(teaching => 
-      teaching.paliText.toLowerCase().includes(lowerQuery) ||
-      teaching.paliRomanized.toLowerCase().includes(lowerQuery) ||
-      teaching.myanmarTranslation.includes(query) ||
-      teaching.explanation.includes(query) ||
-      teaching.source.toLowerCase().includes(lowerQuery) ||
-      teaching.tags.some(tag => tag.includes(query))
-    );
-  }, [query]);
+  const { data: searchResults, isLoading } = useSearchTeachings(query);
 
   return (
     <Layout>
@@ -32,7 +19,7 @@ const Search = () => {
             ရှာဖွေရန်
           </h1>
           <p className="text-muted-foreground font-myanmar mb-8">
-            ပါဠိစကား သို့မဟုတ် မြန်မာဘာသာဖြင့် ရှာဖွေပါ
+            တရားတော်ခေါင်းစဉ် သို့မဟုတ် အရင်းအမြစ်ဖြင့် ရှာဖွေပါ
           </p>
 
           {/* Search Input */}
@@ -72,10 +59,14 @@ const Search = () => {
                 ရှာဖွေလိုသော စကားလုံးကို ရိုက်ထည့်ပါ
               </h2>
               <p className="text-muted-foreground font-myanmar max-w-md mx-auto">
-                ပါဠိစကား၊ မြန်မာဘာသာပြန်၊ သို့မဟုတ် အကြောင်းအရာ အားဖြင့် ရှာဖွေနိုင်ပါသည်
+                တရားတော်ခေါင်းစဉ် သို့မဟုတ် အရင်းအမြစ်အားဖြင့် ရှာဖွေနိုင်ပါသည်
               </p>
             </div>
-          ) : searchResults.length === 0 ? (
+          ) : isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : !searchResults || searchResults.length === 0 ? (
             <div className="text-center py-16">
               <h2 className="font-myanmar text-xl font-semibold text-foreground mb-4">
                 ရှာဖွေမှု ရလဒ် မရှိပါ
@@ -91,7 +82,7 @@ const Search = () => {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {searchResults.map((teaching) => (
-                  <TeachingCard key={teaching.id} teaching={teaching} />
+                  <TeachingListCard key={teaching.id} teaching={teaching} />
                 ))}
               </div>
             </>

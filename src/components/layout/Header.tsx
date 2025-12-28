@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Search, Moon, Sun, Heart } from 'lucide-react';
+import { Menu, X, Search, Moon, Sun, Heart, LogIn, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const { user, signOut } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -28,10 +30,11 @@ const Header = () => {
   };
 
   const navLinks = [
-    { href: '/', label: 'ပင်မစာမျက်နှာ', labelEn: 'Home' },
-    { href: '/teachings', label: 'ဓမ္မသင်ကြားမှု', labelEn: 'Teachings' },
-    { href: '/bookmarks', label: 'သိမ်းဆည်းထားသည်', labelEn: 'Bookmarks' },
-    { href: '/about', label: 'အကြောင်း', labelEn: 'About' },
+    { href: '/', label: 'ပင်မစာမျက်နှာ' },
+    { href: '/teachings', label: 'ဓမ္မသင်ကြားမှု' },
+    { href: '/bookmarks', label: 'သိမ်းဆည်းထားသည်' },
+    { href: '/offline', label: 'ဒေါင်းလုဒ်များ' },
+    { href: '/about', label: 'အကြောင်း' },
   ];
 
   const isActive = (path: string) => location.pathname === path;

@@ -16,17 +16,17 @@ const About = () => {
           <div className="max-w-3xl mx-auto text-center">
             <div className="mb-6">
               <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-temple-gold shadow-gold">
-                <span className="text-primary-foreground font-pali text-4xl font-bold">ဓ</span>
+                <span className="text-primary-foreground font-pali text-4xl font-bold">နိ</span>
               </div>
             </div>
             
             <h1 className="font-myanmar text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              ကျွန်ုပ်တို့အကြောင်း
+              နိဿယဓမ္မ အကြောင်း
             </h1>
             
             <p className="text-lg text-muted-foreground font-myanmar leading-relaxed">
-              ပါဠိတရားတော် မြန်မာဘာသာပြန် ဝက်ဘ်ဆိုက်သည် ဗုဒ္ဓဘာသာ တရားတော်များကို 
-              လူတိုင်း လွယ်ကူစွာ နားလည်နိုင်ရန် ရည်ရွယ်၍ တည်ထောင်ထားခြင်း ဖြစ်ပါသည်။
+              နိဿယဓမ္မသည် ပါဠိတရားတော်များကို နိဿယနည်းလမ်းအတိုင်း 
+              မြန်မာပြည်သူများ လွယ်ကူစွာ နားလည်နိုင်ရန် ရည်ရွယ်၍ တည်ထောင်ထားခြင်း ဖြစ်ပါသည်။
             </p>
           </div>
         </div>
@@ -34,31 +34,29 @@ const About = () => {
 
       <LotusDecoration />
 
-      {/* Mission */}
+      {/* What is Nissaya */}
       <section className="py-16 md:py-24">
         <div className="container px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="font-myanmar text-2xl md:text-3xl font-bold text-foreground mb-8 text-center">
-              ကျွန်ုပ်တို့၏ ရည်မှန်းချက်
+              နိဿယ ဆိုသည်မှာ
             </h2>
             
             <div className="space-y-6 text-foreground/90 font-myanmar leading-relaxed">
               <p>
-                ဗုဒ္ဓဘာသာ၏ အဓိက အခြေခံ ကျမ်းစာများသည် ပါဠိဘာသာဖြင့် ရေးသားထားခြင်း ဖြစ်ပါသည်။ 
-                ထို့ကြောင့် ပါဠိဘာသာကို မတတ်သော မြန်မာပြည်သူများအတွက် ဤတရားတော်များကို 
-                နားလည်ရန် ခက်ခဲတတ်ပါသည်။
+                နိဿယဆိုသည်မှာ ပါဠိစာပေကို ဘာသာပြန်ဆိုရာတွင် သုံးစွဲသော မြန်မာ့ရိုးရာနည်းလမ်း ဖြစ်ပါသည်။ 
+                ပါဠိစကားလုံးတစ်လုံးချင်းစီကို မြန်မာဘာသာဖြင့် အနက်ပြန်ဆိုပြီး၊ 
+                ဝါကျတစ်ခုလုံး၏ အဓိပ္ပာယ်ကို ရှင်းလင်းပြသည်။
               </p>
               
               <p>
-                ကျွန်ုပ်တို့သည် ပါဠိတရားတော်များကို မြန်မာဘာသာဖြင့် ရိုးရှင်းလွယ်ကူစွာ 
-                ဘာသာပြန်ဆိုပြီး ရှင်းလင်းချက်များ ထည့်သွင်းကာ တင်ပြထားပါသည်။ 
-                ဤနည်းဖြင့် အသက်အရွယ်မရွေး၊ ပညာအရည်အချင်းမရွေး လူတိုင်း 
-                ဗုဒ္ဓ၏ အဆုံးအမများကို နားလည်နိုင်ရန် ကူညီပေးလိုပါသည်။
+                ဤနည်းလမ်းသည် ပါဠိစာပေကို လေ့လာသူများအတွက် အလွန်အကျိုးရှိပြီး၊
+                မူရင်းပါဠိနှင့် မြန်မာဘာသာပြန်ကို နှိုင်းယှဉ်လေ့လာနိုင်စေပါသည်။
               </p>
               
               <p>
-                ဤဝက်ဘ်ဆိုက်သည် စီးပွားရေး အကျိုးအမြတ်ရှာခြင်း မဟုတ်ဘဲ 
-                သာသနာပြုလုပ်ငန်း အဖြစ်သာ ဆောင်ရွက်ခြင်း ဖြစ်ပါသည်။
+                နိဿယဓမ္မ ဝက်ဘ်ဆိုက်သည် ဤရိုးရာနည်းလမ်းကို ဒစ်ဂျစ်တယ်ပုံစံဖြင့် တင်ပြထားခြင်း ဖြစ်ပြီး၊
+                မည်သူမဆို မည်သည့်နေရာမှမဆို ဖတ်ရှုနိုင်ရန် ဖန်တီးထားခြင်း ဖြစ်ပါသည်။
               </p>
             </div>
           </div>
@@ -82,7 +80,7 @@ const About = () => {
               </h3>
               <p className="text-muted-foreground font-myanmar">
                 မူရင်း ပါဠိတော်များကို တိကျမှန်ကန်စွာ ဘာသာပြန်ဆိုပြီး 
-                သင့်တော်သော ရှင်းလင်းချက်များ ပေးပါသည်။
+                နိဿယနည်းလမ်းအတိုင်း ရှင်းလင်းချက်များ ပေးပါသည်။
               </p>
             </div>
 
@@ -94,8 +92,8 @@ const About = () => {
                 လူတိုင်းအတွက်
               </h3>
               <p className="text-muted-foreground font-myanmar">
-                ပညာအရည်အချင်းမရွေး လူတိုင်း နားလည်နိုင်သော 
-                ရိုးရှင်းလွယ်ကူသော ဘာသာစကားကို အသုံးပြုပါသည်။
+                သံဃာတော်များ၊ ဒါယကာဒါယိကာမများ၊ ကျောင်းသားကျောင်းသူများ
+                လူတိုင်း လေ့လာနိုင်ပါသည်။
               </p>
             </div>
 
@@ -117,11 +115,11 @@ const About = () => {
                 <Shield className="w-6 h-6 text-lotus" />
               </div>
               <h3 className="font-myanmar text-lg font-semibold text-foreground mb-2">
-                ပွင့်လင်းမြင်သာမှု
+                သာသနာပြု
               </h3>
               <p className="text-muted-foreground font-myanmar">
-                လှူဒါန်းမှုများကို မည်သို့ အသုံးပြုသည်ကို 
-                ပွင့်လင်းမြင်သာစွာ ဖော်ပြပါသည်။
+                စီးပွားရေး ရည်ရွယ်ချက်မဟုတ်ဘဲ သာသနာတော် ထွန်းကားရေးအတွက်သာ 
+                ဆောင်ရွက်ပါသည်။
               </p>
             </div>
           </div>
@@ -138,10 +136,10 @@ const About = () => {
 
             <div className="space-y-4 mb-8">
               {[
-                'ပါဠိတရားတော်များကို မြန်မာဘာသာသို့ ဆက်လက် ဘာသာပြန်ဆိုခြင်း',
+                'ပါဠိတရားတော်များကို နိဿယနည်းလမ်းဖြင့် ဆက်လက် ဘာသာပြန်ဆိုခြင်း',
                 'ဝက်ဘ်ဆိုက် ထိန်းသိမ်းမှုနှင့် hosting ကုန်ကျစရိတ်',
-                'ပိုမိုကောင်းမွန်သော အသုံးပြုသူ အတွေ့အကြုံ ဖန်တီးခြင်း',
-                'မိုဘိုင်းအက်ပ် ဖန်တီးခြင်း (အနာဂတ် စီမံကိန်း)',
+                'ပိုမိုကောင်းမွန်သော ဖတ်ရှုမှု အတွေ့အကြုံ ဖန်တီးခြင်း',
+                'အသံဖိုင်များ ထုတ်လုပ်ခြင်း (ပါဠိရွတ်ဖတ်သံ၊ မြန်မာရှင်းလင်းချက်)',
               ].map((item, index) => (
                 <div key={index} className="flex items-start gap-3 p-4 rounded-lg bg-secondary/50">
                   <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -174,7 +172,7 @@ const About = () => {
               တရားတော်များကို စတင်ဖတ်ရှုပါ
             </h2>
             <p className="text-muted-foreground font-myanmar mb-8">
-              ယနေ့ပင် ဗုဒ္ဓ၏ အဆုံးအမများကို စတင်လေ့လာပါ
+              ယနေ့ပင် ဗုဒ္ဓ၏ အဆုံးအမများကို နိဿယနည်းလမ်းဖြင့် လေ့လာပါ
             </p>
             <Link to="/teachings">
               <Button variant="golden" size="xl" className="gap-2 font-myanmar">
