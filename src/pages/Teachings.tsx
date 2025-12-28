@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Filter, X } from 'lucide-react';
+import { Filter, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/layout/Layout';
-import TeachingCard from '@/components/TeachingCard';
-import { teachings, categories } from '@/data/teachings';
+import TeachingListCard from '@/components/TeachingListCard';
+import { useTeachings, useCategories } from '@/hooks/useTeachings';
 import { cn } from '@/lib/utils';
 
 const Teachings = () => {
@@ -12,11 +12,9 @@ const Teachings = () => {
   const [showFilters, setShowFilters] = useState(false);
   
   const activeCategory = searchParams.get('category');
-
-  const filteredTeachings = useMemo(() => {
-    if (!activeCategory) return teachings;
-    return teachings.filter(t => t.category === activeCategory);
-  }, [activeCategory]);
+  
+  const { data: categories } = useCategories();
+  const { data: teachings, isLoading } = useTeachings(activeCategory ?? undefined);
 
   const handleCategoryClick = (categoryId: string | null) => {
     if (categoryId) {
@@ -27,6 +25,11 @@ const Teachings = () => {
     setShowFilters(false);
   };
 
+  const activeCategoryName = useMemo(() => {
+    if (!activeCategory || !categories) return null;
+    return categories.find(c => c.id === activeCategory)?.name;
+  }, [activeCategory, categories]);
+
   return (
     <Layout>
       {/* Header */}
@@ -36,7 +39,7 @@ const Teachings = () => {
             ဓမ္မသင်ကြားမှုများ
           </h1>
           <p className="text-muted-foreground font-myanmar max-w-2xl">
-            ပါဠိတရားတော်များကို မြန်မာဘာသာဖြင့် လေ့လာပါ
+            ပါဠိတရားတော်များကို မြန်မာဘာသာဖြင့် နိဿယနည်းလမ်းအတိုင်း လေ့လာပါ
           </p>
         </div>
       </section>
@@ -66,7 +69,7 @@ const Teachings = () => {
               >
                 အားလုံး
               </Button>
-              {categories.map((category) => (
+              {categories?.map((category) => (
                 <Button
                   key={category.id}
                   variant={activeCategory === category.id ? 'default' : 'outline'}
@@ -81,7 +84,7 @@ const Teachings = () => {
             </div>
 
             {/* Active Filter Badge */}
-            {activeCategory && (
+            {activeCategory && activeCategoryName && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -89,9 +92,7 @@ const Teachings = () => {
                 onClick={() => handleCategoryClick(null)}
               >
                 <X className="w-4 h-4" />
-                <span className="font-myanmar">
-                  {categories.find(c => c.id === activeCategory)?.name}
-                </span>
+                <span className="font-myanmar">{activeCategoryName}</span>
               </Button>
             )}
           </div>
@@ -110,7 +111,7 @@ const Teachings = () => {
               >
                 အားလုံး
               </Button>
-              {categories.map((category) => (
+              {categories?.map((category) => (
                 <Button
                   key={category.id}
                   variant={activeCategory === category.id ? 'default' : 'outline'}
@@ -130,20 +131,26 @@ const Teachings = () => {
       {/* Teachings Grid */}
       <section className="py-12">
         <div className="container px-4">
-          {filteredTeachings.length === 0 ? (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : !teachings || teachings.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-muted-foreground font-myanmar">
-                ဤအမျိုးအစားတွင် တရားတော်များ မရှိသေးပါ
+                {activeCategory 
+                  ? 'ဤအမျိုးအစားတွင် တရားတော်များ မရှိသေးပါ' 
+                  : 'တရားတော်များ မရှိသေးပါ'}
               </p>
             </div>
           ) : (
             <>
               <p className="text-sm text-muted-foreground font-myanmar mb-6">
-                {filteredTeachings.length} ခု တွေ့ရှိသည်
+                {teachings.length} ခု တွေ့ရှိသည်
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredTeachings.map((teaching) => (
-                  <TeachingCard key={teaching.id} teaching={teaching} />
+                {teachings.map((teaching) => (
+                  <TeachingListCard key={teaching.id} teaching={teaching} />
                 ))}
               </div>
             </>

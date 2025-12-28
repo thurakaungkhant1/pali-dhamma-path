@@ -1,50 +1,66 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, Heart, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, Heart, Sparkles, Download, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/layout/Layout';
-import TeachingCard from '@/components/TeachingCard';
+import TeachingListCard from '@/components/TeachingListCard';
 import CategoryCard from '@/components/CategoryCard';
+import DailyDhammaCard from '@/components/DailyDhammaCard';
 import LotusDecoration from '@/components/LotusDecoration';
-import { teachings, categories } from '@/data/teachings';
+import { useCategories, useTeachings, useDailyDhamma } from '@/hooks/useTeachings';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
-  const featuredTeaching = teachings[0];
-  const recentTeachings = teachings.slice(1, 4);
+  const { user } = useAuth();
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
+  const { data: teachings, isLoading: teachingsLoading } = useTeachings();
+  const { data: dailyDhamma } = useDailyDhamma();
+
+  const recentTeachings = teachings?.slice(0, 6) ?? [];
 
   return (
     <Layout>
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-        {/* Background Gradient */}
+        {/* Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-secondary/50 via-background to-background" />
-        
-        {/* Decorative Elements */}
         <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-primary/10 blur-3xl animate-float" />
         <div className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-temple-gold/10 blur-3xl animate-float" style={{ animationDelay: '2s' }} />
 
         <div className="container relative z-10 px-4 py-20 text-center">
           {/* Logo */}
           <div className="mb-8 opacity-0 animate-fade-in">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-temple-gold shadow-gold">
-              <span className="text-primary-foreground font-pali text-4xl font-bold">ဓ</span>
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-primary to-temple-gold shadow-gold">
+              <span className="text-primary-foreground font-pali text-5xl font-bold">နိ</span>
             </div>
           </div>
 
           {/* Title */}
           <h1 className="mb-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <span className="block font-myanmar text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-2">
-              ပါဠိတရားတော်
+              နိဿယဓမ္မ
             </span>
             <span className="block text-lg md:text-xl text-muted-foreground">
-              Pāḷi Dhamma Myanmar
+              Nissaya Dhamma
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="max-w-2xl mx-auto mb-8 text-lg md:text-xl text-muted-foreground font-myanmar leading-relaxed opacity-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            ဗုဒ္ဓဘာသာ ပါဠိတော်များကို မြန်မာဘာသာဖြင့် <br className="hidden sm:block" />
-            လွယ်ကူစွာ နားလည်နိုင်ရန် ပြုစုထားပါသည်။
+            ပါဠိတရားတော်များကို မြန်မာဘာသာဖြင့် <br className="hidden sm:block" />
+            နိဿယနည်းလမ်းအတိုင်း ရှင်းလင်းစွာ နားလည်နိုင်ရန်
           </p>
+
+          {/* Features */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-8 text-sm text-muted-foreground opacity-0 animate-fade-in" style={{ animationDelay: '0.25s' }}>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary">
+              <BookOpen className="w-4 h-4" />
+              <span className="font-myanmar">ပုဒ်တစ်ပုဒ်ချင်း ရှင်းလင်းချက်</span>
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary">
+              <Download className="w-4 h-4" />
+              <span className="font-myanmar">အော့ဖ်လိုင်း ဖတ်ရှုနိုင်</span>
+            </span>
+          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 opacity-0 animate-fade-in" style={{ animationDelay: '0.3s' }}>
@@ -54,12 +70,14 @@ const Index = () => {
                 တရားတော်များ ဖတ်ရန်
               </Button>
             </Link>
-            <Link to="/about">
-              <Button variant="outline" size="lg" className="gap-2 font-myanmar">
-                ကျွန်ုပ်တို့အကြောင်း
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
+            {!user && (
+              <Link to="/auth">
+                <Button variant="outline" size="lg" className="gap-2 font-myanmar">
+                  <Users className="w-4 h-4" />
+                  အကောင့်ဝင်ရန်
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Scroll Indicator */}
@@ -67,24 +85,19 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Teaching */}
-      <section className="py-16 md:py-24">
-        <div className="container px-4">
-          <div className="text-center mb-12">
-            <span className="inline-flex items-center gap-2 text-sm text-primary font-medium mb-4">
-              <Sparkles className="w-4 h-4" />
-              <span className="font-myanmar">ယနေ့တရားတော်</span>
-            </span>
-            <h2 className="font-myanmar text-2xl md:text-3xl font-bold text-foreground">
-              အထူးဖော်ပြချက်
-            </h2>
+      {/* Daily Dhamma */}
+      {dailyDhamma?.teaching && (
+        <section className="py-16 md:py-24">
+          <div className="container px-4">
+            <div className="max-w-3xl mx-auto">
+              <DailyDhammaCard 
+                teaching={dailyDhamma.teaching} 
+                excerpt={dailyDhamma.excerpt}
+              />
+            </div>
           </div>
-
-          <div className="max-w-3xl mx-auto">
-            <TeachingCard teaching={featuredTeaching} featured />
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <LotusDecoration />
 
@@ -100,11 +113,28 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category, index) => (
-              <CategoryCard key={category.id} {...category} index={index} />
-            ))}
-          </div>
+          {categoriesLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="h-40 bg-card rounded-xl animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {categories?.map((category, index) => (
+                <CategoryCard 
+                  key={category.id} 
+                  id={category.id}
+                  name={category.name}
+                  nameEn={category.name_en ?? ''}
+                  description={category.description ?? ''}
+                  icon={category.icon ?? '📜'}
+                  count={0}
+                  index={index}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -128,11 +158,25 @@ const Index = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentTeachings.map((teaching) => (
-              <TeachingCard key={teaching.id} teaching={teaching} />
-            ))}
-          </div>
+          {teachingsLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="h-48 bg-card rounded-xl animate-pulse" />
+              ))}
+            </div>
+          ) : recentTeachings.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground font-myanmar">
+                တရားတော်များ မရှိသေးပါ
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recentTeachings.map((teaching) => (
+                <TeachingListCard key={teaching.id} teaching={teaching} />
+              ))}
+            </div>
+          )}
 
           <div className="mt-8 text-center sm:hidden">
             <Link to="/teachings">
@@ -162,8 +206,8 @@ const Index = () => {
             </h2>
             
             <p className="text-lg text-muted-foreground font-myanmar leading-relaxed mb-8">
-              ဤဝက်ဘ်ဆိုက်သည် ဗုဒ္ဓဘာသာ ပါဠိတရားတော်များကို မြန်မာပြည်သူပြည်သားများ 
-              လွယ်ကူစွာ နားလည်နိုင်ရန် ရည်ရွယ်၍ ပြုစုထားခြင်း ဖြစ်ပါသည်။ 
+              နိဿယဓမ္မသည် ပါဠိတရားတော်များကို နိဿယနည်းလမ်းအတိုင်း 
+              မြန်မာပြည်သူများ လွယ်ကူစွာ နားလည်နိုင်ရန် ရည်ရွယ်၍ ပြုစုထားခြင်း ဖြစ်ပါသည်။
               စီးပွားရေး ရည်ရွယ်ချက်မဟုတ်ဘဲ သာသနာပြုလုပ်ငန်း အဖြစ်သာ ဆောင်ရွက်ပါသည်။
             </p>
 
