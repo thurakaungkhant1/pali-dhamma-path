@@ -14,6 +14,8 @@ import Offline from "./pages/Offline";
 import About from "./pages/About";
 import Donate from "./pages/Donate";
 import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
+import AdminTeachingEdit from "./pages/AdminTeachingEdit";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/donate" element={<Donate />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/teaching/:id" element={<AdminTeachingEdit />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
